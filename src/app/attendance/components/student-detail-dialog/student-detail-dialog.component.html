@@ -1,0 +1,45 @@
+<h2 mat-dialog-title>Información del alumno</h2>
+<mat-dialog-content>
+  @if (state() === 'loading') {
+    <mat-progress-bar mode="indeterminate" />
+  } @else if (state() === 'error' || !history()) {
+    <p class="alert-error" role="alert">No fue posible consultar al alumno.</p>
+  } @else {
+    @if (history(); as record) {
+      <app-student-attendance-card
+        [student]="record.student"
+        [status]="todayRow()?.status ?? null"
+        [checkInTime]="todayRow()?.checkInTime ?? null"
+        [message]="'Asistencia del ' + formatLongDate(data.focusDate)"
+      />
+      <div class="detail-layout">
+        <section>
+          <h3>Historial reciente</h3>
+          <p class="muted">{{ record.attendedDays }} de {{ record.recordedDays }} días con entrada · {{ record.attendanceRate | number:'1.0-1' }}%</p>
+          <ul>
+            @for (day of record.days; track day.date) {
+              <li [class.is-focus]="day.date === data.focusDate">
+                <span>{{ formatLongDate(day.date) }}</span>
+                <span>{{ day.checkInTime ? (day.checkInTime | date:'HH:mm') : '—' }}</span>
+                <span [class]="'status ' + statusClass(day.status)">{{ statusLabel[day.status] }}</span>
+              </li>
+            }
+          </ul>
+        </section>
+        <aside>
+          <h3>Código QR</h3>
+          @if (qrUrl(); as url) {
+            <img [src]="url" [alt]="'Código QR de ' + record.student.fullName" width="168" height="168" />
+          }
+          <p class="muted">Contiene la matrícula {{ record.student.enrollment }}.</p>
+        </aside>
+      </div>
+    }
+  }
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  @if (history(); as record) {
+    <a mat-button [routerLink]="['/asistencia/historial', record.student.id]" (click)="close()">Ver historial completo</a>
+  }
+  <button mat-flat-button color="primary" type="button" mat-dialog-close>Cerrar</button>
+</mat-dialog-actions>

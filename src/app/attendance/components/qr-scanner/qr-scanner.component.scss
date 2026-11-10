@@ -1,0 +1,104 @@
+.scanner-head {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  align-items: flex-start;
+}
+
+h2, p { margin: 0; }
+h2 { font-size: 22px; }
+.scanner-head p, .schedule, .hint { color: var(--muted); font-size: 13px; }
+.schedule { margin-top: 8px; }
+.hint-late { color: var(--late); }
+
+.viewport {
+  position: relative;
+  margin-top: 14px;
+  min-height: 240px;
+  border-radius: 16px;
+  overflow: hidden;
+  background: #102033;
+  border: 2px solid transparent;
+}
+
+.viewport.is-success { border-color: var(--present); }
+.viewport.is-warning { border-color: #e0b84d; }
+.viewport.is-error { border-color: var(--absent); }
+
+.viewport-placeholder {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  align-content: center;
+  gap: 6px;
+  color: #d5e2ee;
+  text-align: center;
+}
+
+.viewport-placeholder mat-icon {
+  width: 42px;
+  height: 42px;
+  font-size: 42px;
+}
+
+.camera-actions, .external {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  margin-top: 12px;
+}
+
+.external mat-form-field { flex: 1; }
+
+.alert {
+  margin: 12px 0 0;
+  padding: 10px 12px;
+  border-radius: 12px;
+  font-size: 14px;
+}
+
+.alert-error {
+  background: var(--absent-bg);
+  color: var(--absent);
+}
+
+app-student-attendance-card { display: block; margin-top: 14px; }
+
+.recent {
+  list-style: none;
+  margin: 14px 0 0;
+  padding: 0;
+  display: grid;
+  gap: 6px;
+}
+
+.recent li {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  font-size: 13px;
+}
+
+.recent small { color: var(--muted); }
+
+.samples { margin-top: 16px; }
+.sample-list { display: grid; gap: 8px; margin-top: 8px; }
+.sample-list button {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 2px;
+  width: 100%;
+  text-align: left;
+  border: 1px solid var(--line);
+  background: #fff;
+  border-radius: 12px;
+  padding: 8px 10px;
+  cursor: pointer;
+}
+.sample-list span { color: var(--muted); font-size: 12px; }
+
+@media (max-width: 640px) {
+  .external { flex-direction: column; align-items: stretch; }
+}

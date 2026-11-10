@@ -1,0 +1,45 @@
+.table-toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 8px;
+}
+
+.table-toolbar p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.table-wrap {
+  overflow: auto;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: #fff;
+}
+
+table {
+  width: 100%;
+  min-width: 980px;
+}
+
+.method {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.method mat-icon {
+  width: 18px;
+  height: 18px;
+  font-size: 18px;
+}
+
+.empty {
+  margin: 16px 0 0;
+  color: var(--muted);
+}
+
+td.mat-mdc-cell {
+  vertical-align: middle;
+}

@@ -1,0 +1,16 @@
+<article class="student-card" [class]="'tone-' + tone()">
+  <app-student-avatar [name]="student().fullName" [photoUrl]="student().photoUrl" size="md" />
+  <div>
+    <p class="eyebrow">{{ message() || 'Ficha del alumno' }}</p>
+    <h3>{{ student().fullName }}</h3>
+    <p>Matrícula {{ student().enrollment }}</p>
+    <p>{{ student().gradeName }} · Grupo {{ student().groupName }}</p>
+    <p>{{ student().levelName }}</p>
+    @if (checkInTime(); as time) {
+      <p class="time">Hora de entrada: {{ time | date:'HH:mm:ss' }}</p>
+    }
+    @if (status(); as current) {
+      <span [class]="'status ' + statusClass(current)">{{ statusLabel[current] }}</span>
+    }
+  </div>
+</article>

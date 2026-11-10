@@ -1,0 +1,31 @@
+<section class="page scanner-page">
+  <header class="page-header">
+    <div>
+      <p class="eyebrow">Entrada escolar</p>
+      <h1>Escanear código QR</h1>
+      <p>Identifique al alumno, valide su registro y guarde la hora de entrada.</p>
+    </div>
+    <div class="page-actions">
+      <a mat-stroked-button routerLink="/asistencia">
+        <mat-icon>arrow_back</mat-icon>
+        Ver asistencia
+      </a>
+    </div>
+  </header>
+
+  <section class="mini-stats" aria-label="Indicadores del día">
+    <article><span>Inscritos</span><strong>{{ stats().enrolled }}</strong></article>
+    <article><span>Presentes</span><strong>{{ stats().present }}</strong></article>
+    <article><span>Retardos</span><strong>{{ stats().late }}</strong></article>
+    <article><span>Ausentes</span><strong>{{ stats().absent }}</strong></article>
+    <article><span>Asistencia</span><strong>{{ stats().attendanceRate | number:'1.0-1' }}%</strong></article>
+  </section>
+
+  @if (lastUpdated(); as updated) {
+    <p class="updated">Indicadores actualizados a las {{ updated | date:'HH:mm:ss' }}</p>
+  }
+
+  <section class="panel scanner-sheet">
+    <app-qr-scanner />
+  </section>
+</section>

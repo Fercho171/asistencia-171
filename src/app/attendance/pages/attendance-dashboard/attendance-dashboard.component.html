@@ -1,0 +1,162 @@
+@if (loading()) {
+  <mat-progress-bar mode="indeterminate" />
+}
+
+<section class="page">
+  <header class="page-header">
+    <div>
+      <p class="eyebrow">{{ schoolName }}</p>
+      <h1>Control de asistencia</h1>
+      <p>Registro y seguimiento de asistencia diaria.</p>
+    </div>
+    <div class="page-meta">
+      <p class="today">{{ now() | date:"EEEE d 'de' MMMM y" }}</p>
+      <p class="scanner-state" [class.is-on]="cameraActive()">
+        <span class="dot"></span>
+        {{ cameraActive() ? 'Cámara de escaneo activa' : 'Sistema de escaneo inactivo' }}
+      </p>
+      <p class="updated">
+        @if (lastUpdated(); as updated) {
+          Actualizado a las {{ updated | date:'HH:mm:ss' }}
+        } @else {
+          Sin consultar
+        }
+      </p>
+    </div>
+    <div class="page-actions">
+      <button mat-stroked-button type="button" (click)="openSettings()">
+        <mat-icon>schedule</mat-icon>
+        Horario
+      </button>
+      <button mat-stroked-button type="button" (click)="refresh()" [disabled]="loading()" matTooltip="Actualizar información">
+        <mat-icon [class.spin]="loading()">refresh</mat-icon>
+        Actualizar
+      </button>
+      <app-attendance-export-menu [filters]="filters()" />
+    </div>
+  </header>
+
+  @if (error(); as message) {
+    <p class="banner banner-error" role="alert">{{ message }}</p>
+  }
+  @if (!viewingToday()) {
+    <p class="banner">Está consultando otro día. Un escaneo nuevo siempre registra la entrada de hoy.</p>
+  }
+
+  <app-attendance-stats [stats]="stats()" [activeStatus]="filters().status" (statusSelected)="onStat($event)" />
+
+  <section class="grade-board" aria-label="Asistencia por grado">
+    <div class="grade-head">
+      <h2>Asistencia por grado</h2>
+      <div class="grade-totals">
+        <p class="student-total">
+          <span>Total de alumnos</span>
+          <strong>{{ studentTotal() }}</strong>
+        </p>
+        <p class="student-total student-total-attended">
+          <span>Asistieron los 3 grados</span>
+          <strong>{{ attendedTotal() }}</strong>
+          <span class="attended-sum">
+            @for (grade of attendedByGrade(); track grade.name; let last = $last) {
+              {{ grade.attended }}@if (!last) { + }
+            }
+          </span>
+        </p>
+      </div>
+    </div>
+    <div class="grade-grid">
+      @for (grade of gradeAttendance(); track grade.id) {
+        <article class="grade-card" [class.is-active]="filters().gradeId === grade.id">
+          <button type="button" class="grade-main" (click)="onGradeSelected(grade.id)" [attr.aria-pressed]="filters().gradeId === grade.id">
+            <span class="grade-kicker">Secundaria</span>
+            <strong>{{ grade.name }}</strong>
+            <b>{{ grade.stats.attendanceRate | number:'1.0-1' }}%</b>
+            <span class="grade-track" aria-hidden="true">
+              <span class="grade-fill" [style.width.%]="grade.stats.attendanceRate"></span>
+            </span>
+            <span class="grade-counts">
+              Total: {{ grade.stats.enrolled }} {{ grade.stats.enrolled === 1 ? 'alumno' : 'alumnos' }}
+              · {{ grade.stats.present }} {{ grade.stats.present === 1 ? 'presente' : 'presentes' }}
+              · {{ grade.stats.late }} {{ grade.stats.late === 1 ? 'retardo' : 'retardos' }}
+              · {{ grade.stats.absent }} {{ grade.stats.absent === 1 ? 'ausente' : 'ausentes' }}
+            </span>
+          </button>
+          <div class="grade-groups">
+            @for (group of grade.groups; track group.id) {
+              <button
+                type="button"
+                [class.is-active]="filters().groupId === group.id"
+                [attr.aria-pressed]="filters().groupId === group.id"
+                (click)="onGroupSelected({ gradeId: grade.id, groupId: group.id })"
+              >
+                <span>Grupo {{ group.name }}</span>
+                <strong>{{ group.stats.attendanceRate | number:'1.0-0' }}%</strong>
+              </button>
+            }
+          </div>
+        </article>
+      }
+    </div>
+  </section>
+
+  @if (stats().pending > 0) {
+    <button type="button" class="missing" (click)="showMissing()">
+      @if (stats().pending === 1) {
+        1 alumno aún no registra su entrada
+      } @else {
+        {{ stats().pending }} alumnos aún no registran su entrada
+      }
+    </button>
+  } @else if (stats().absent > 0) {
+    <button type="button" class="missing" (click)="showMissing()">
+      @if (stats().absent === 1) {
+        1 alumno sin registro de entrada
+      } @else {
+        {{ stats().absent }} alumnos sin registro de entrada
+      }
+    </button>
+  }
+
+  <section class="scan-banner">
+    <div>
+      <h2>Escanear código QR</h2>
+      <p>Active la cámara o use un lector externo para registrar la entrada del día.</p>
+    </div>
+    <div class="page-actions">
+      <button mat-flat-button color="primary" type="button" (click)="scannerOpen.set(true)">
+        <mat-icon>qr_code_scanner</mat-icon>
+        Escanear aquí
+      </button>
+      <a mat-stroked-button routerLink="/asistencia/escaner">Pantalla completa</a>
+    </div>
+  </section>
+
+  <section class="panel">
+    <app-attendance-filters
+      [value]="filters()"
+      [levels]="catalog().levels"
+      [grades]="catalog().grades"
+      [groups]="catalog().groups"
+      (filtersChange)="onFiltersChange($event)"
+    />
+    <app-grade-group-selector
+      [levels]="catalog().levels"
+      [grades]="catalog().grades"
+      [groups]="catalog().groups"
+      [levelId]="filters().levelId"
+      [selectedGroupId]="filters().groupId"
+      (groupSelected)="onGroupSelected($event)"
+    />
+  </section>
+
+  <section class="panel">
+    <app-attendance-table [rows]="visibleRows()" [resetToken]="filterKey()" (consult)="consult($event)" />
+  </section>
+</section>
+
+@if (scannerOpen()) {
+  <button type="button" class="scanner-backdrop" aria-label="Cerrar escáner" (click)="scannerOpen.set(false)"></button>
+  <aside class="scanner-panel" role="dialog" aria-label="Escanear código QR">
+    <app-qr-scanner [embedded]="true" (closed)="scannerOpen.set(false)" />
+  </aside>
+}

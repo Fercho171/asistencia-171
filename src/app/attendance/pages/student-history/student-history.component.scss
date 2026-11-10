@@ -1,0 +1,21 @@
+app-student-attendance-card { display: block; margin-bottom: 16px; }
+
+.history-layout {
+  display: grid;
+  grid-template-columns: 1fr 240px;
+  gap: 16px;
+}
+
+h2 { margin: 0 0 6px; font-size: 18px; }
+.muted { margin: 0 0 12px; color: var(--muted); }
+
+table { width: 100%; border-collapse: collapse; }
+th, td { padding: 10px 8px; border-bottom: 1px solid var(--line); text-align: left; font-size: 14px; }
+th { color: var(--muted); font-weight: 600; }
+
+.qr-panel { text-align: center; }
+.qr-panel img { width: 180px; height: 180px; }
+
+@media (max-width: 800px) {
+  .history-layout { grid-template-columns: 1fr; }
+}

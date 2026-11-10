@@ -1,0 +1,98 @@
+<section class="scanner">
+  <header class="scanner-head">
+    <div>
+      <h2>Escanear código QR</h2>
+      <p>El código contiene la matrícula del alumno.</p>
+    </div>
+    @if (embedded()) {
+      <button mat-icon-button type="button" (click)="closed.emit()" aria-label="Cerrar escáner">
+        <mat-icon>close</mat-icon>
+      </button>
+    }
+  </header>
+
+  <p class="schedule">{{ scheduleLabel() }}</p>
+  <p class="hint" [class.hint-late]="arrivalHint().includes('retardo')">{{ arrivalHint() }}</p>
+
+  <div class="viewport" [class.is-success]="tone() === 'success'" [class.is-warning]="tone() === 'warning'" [class.is-error]="tone() === 'error'">
+    <div id="qr-reader"></div>
+    @if (!cameraOn()) {
+      <div class="viewport-placeholder">
+        <mat-icon>qr_code_scanner</mat-icon>
+        <p>La cámara está apagada.</p>
+      </div>
+    }
+  </div>
+
+  <div class="camera-actions">
+    @if (!cameraOn()) {
+      <button mat-flat-button color="primary" type="button" (click)="startCamera()" [disabled]="starting()">
+        <mat-icon>photo_camera</mat-icon>
+        Activar cámara
+      </button>
+    } @else {
+      <button mat-stroked-button type="button" (click)="stopCamera()">
+        <mat-icon>videocam_off</mat-icon>
+        Detener cámara
+      </button>
+    }
+  </div>
+
+  @if (cameraError(); as error) {
+    <p class="alert alert-error" role="alert">{{ error }}</p>
+  }
+
+  <form class="external" [formGroup]="externalForm" (ngSubmit)="submitExternal()">
+    <mat-form-field appearance="outline" subscriptSizing="dynamic">
+      <mat-label>Lector QR externo</mat-label>
+      <input matInput formControlName="code" autocomplete="off" placeholder="Matrícula o contenido del QR" />
+    </mat-form-field>
+    <button mat-flat-button color="primary" type="submit">Registrar</button>
+  </form>
+  <p class="hint">Si la cámara no está disponible, el lector USB escribe la matrícula y presiona Enter.</p>
+
+  @if (requestError(); as error) {
+    <p class="alert alert-error" role="alert">{{ error }}</p>
+  }
+
+  <div class="sr-only" aria-live="assertive">{{ outcome()?.message }}</div>
+
+  @if (outcome(); as result) {
+    @if (result.student) {
+      <app-student-attendance-card
+        [student]="result.student"
+        [status]="result.status"
+        [checkInTime]="result.checkInTime"
+        [message]="result.message"
+        [tone]="tone()"
+      />
+    } @else {
+      <p class="alert alert-error" role="alert">{{ result.message }}</p>
+    }
+  }
+
+  @if (recent().length > 1) {
+    <ol class="recent">
+      @for (item of recent(); track item.checkInTime + (item.student?.id ?? item.result)) {
+        <li>
+          <span>{{ item.student?.fullName }}</span>
+          <small>{{ item.checkInTime ? (item.checkInTime | date:'HH:mm:ss') : item.message }}</small>
+        </li>
+      }
+    </ol>
+  }
+
+  @if (samples().length) {
+    <details class="samples">
+      <summary>Matrículas de prueba</summary>
+      <div class="sample-list">
+        @for (sample of samples(); track sample.code) {
+          <button type="button" (click)="process(sample.code)">
+            <strong>{{ sample.code }}</strong>
+            <span>{{ sample.label }}</span>
+          </button>
+        }
+      </div>
+    </details>
+  }
+</section>

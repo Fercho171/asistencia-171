@@ -1,0 +1,67 @@
+@if (state().status === 'loading') {
+  <mat-progress-bar mode="indeterminate" />
+}
+
+<section class="page">
+  <header class="page-header">
+    <div>
+      <p class="eyebrow">Historial individual</p>
+      <h1>Asistencia del alumno</h1>
+      <p>Entradas registradas durante los últimos días hábiles.</p>
+    </div>
+    <div class="page-actions">
+      <a mat-stroked-button routerLink="/asistencia/historial">
+        <mat-icon>arrow_back</mat-icon>
+        Historial
+      </a>
+    </div>
+  </header>
+
+  @if (state().status === 'error') {
+    <p class="banner banner-error" role="alert">No fue posible consultar el historial del alumno.</p>
+  }
+  @if (state().history; as record) {
+    <app-student-attendance-card
+      [student]="record.student"
+      [status]="latestDay(record)?.status ?? null"
+      [checkInTime]="latestDay(record)?.checkInTime ?? null"
+      message="Día más reciente del historial"
+    />
+
+    <section class="history-layout">
+      <div class="panel">
+        <h2>{{ record.attendedDays }} de {{ record.recordedDays }} días con entrada</h2>
+        <p class="muted">Asistencia del periodo: {{ record.attendanceRate | number:'1.0-1' }}%</p>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Fecha</th>
+                <th>Hora de entrada</th>
+                <th>Estado</th>
+                <th>Método</th>
+              </tr>
+            </thead>
+            <tbody>
+              @for (day of record.days; track day.date) {
+                <tr>
+                  <td>{{ formatLongDate(day.date) }}</td>
+                  <td>{{ day.checkInTime ? (day.checkInTime | date:'HH:mm:ss') : '—' }}</td>
+                  <td><span [class]="'status ' + statusClass(day.status)">{{ statusLabel[day.status] }}</span></td>
+                  <td>{{ day.method ?? 'Sin registro' }}</td>
+                </tr>
+              }
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <aside class="panel qr-panel">
+        <h2>Código QR</h2>
+        @if (qrUrl(); as url) {
+          <img [src]="url" [alt]="'Código QR de ' + record.student.fullName" width="180" height="180" />
+        }
+        <p class="muted">Matrícula {{ record.student.enrollment }}</p>
+      </aside>
+    </section>
+  }
+</section>

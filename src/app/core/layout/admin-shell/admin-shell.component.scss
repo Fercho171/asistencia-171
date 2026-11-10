@@ -1,0 +1,75 @@
+:host { display: block; height: 100%; }
+
+.shell { height: 100%; background: var(--paper); }
+
+.sidebar {
+  width: var(--sidebar);
+  background: var(--brand-strong);
+  color: #f4f8fb;
+  border: 0;
+}
+
+:host ::ng-deep .sidebar .mat-drawer-inner-container {
+  background: var(--brand-strong);
+  color: #f4f8fb;
+  padding: 22px 14px;
+}
+
+.brand {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  padding: 0 8px 22px;
+}
+
+.brand strong,
+.brand small { display: block; }
+.brand small { color: rgba(255, 255, 255, 0.68); margin-top: 2px; }
+
+.mark {
+  display: grid;
+  place-items: center;
+  width: 42px;
+  height: 42px;
+  border-radius: 12px;
+  background: #fff;
+  color: var(--brand-strong);
+  font-weight: 700;
+}
+
+.nav-link {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 4px 0;
+  padding: 11px 12px;
+  border-radius: 12px;
+  color: inherit;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.nav-link mat-icon { color: rgba(255, 255, 255, 0.8); }
+.nav-link:hover,
+.nav-link.active { background: rgba(255, 255, 255, 0.12); }
+.nav-link.active mat-icon { color: #fff; }
+
+.demo-note {
+  margin: 28px 8px 0;
+  color: rgba(255, 255, 255, 0.68);
+  font-size: 12px;
+  line-height: 1.45;
+}
+
+.mobile-bar {
+  display: none;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  background: #fff;
+  border-bottom: 1px solid var(--line);
+}
+
+@media (max-width: 960px) {
+  .mobile-bar { display: flex; }
+}

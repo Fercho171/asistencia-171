@@ -1,0 +1,42 @@
+.scanner-page {
+  max-width: 860px;
+}
+
+.mini-stats {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 10px;
+  margin-bottom: 8px;
+}
+
+.mini-stats article {
+  padding: 12px;
+  border-radius: 14px;
+  background: #fff;
+  border: 1px solid var(--line);
+}
+
+.mini-stats span {
+  display: block;
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.mini-stats strong {
+  font-size: 22px;
+  font-variant-numeric: tabular-nums;
+}
+
+.updated {
+  margin: 0 0 12px;
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.scanner-sheet {
+  padding: 8px 4px 4px;
+}
+
+@media (max-width: 800px) {
+  .mini-stats { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}

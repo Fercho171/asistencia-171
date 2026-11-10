@@ -1,0 +1,69 @@
+@if (loading()) {
+  <mat-progress-bar mode="indeterminate" />
+}
+
+<section class="page">
+  <header class="page-header">
+    <div>
+      <p class="eyebrow">Consulta histórica</p>
+      <h1>Historial de asistencia</h1>
+      <p>Consulte la asistencia por fecha, grado, grupo y alumno.</p>
+    </div>
+    <div class="page-meta">
+      @if (lastUpdated(); as updated) {
+        <p class="updated">Actualizado a las {{ updated | date:'HH:mm:ss' }}</p>
+      }
+    </div>
+    <div class="page-actions">
+      <a mat-stroked-button routerLink="/asistencia">Volver al día</a>
+      <app-attendance-export-menu [filters]="filters()" />
+    </div>
+  </header>
+
+  @if (error(); as message) {
+    <p class="banner banner-error" role="alert">{{ message }}</p>
+  }
+
+  <section class="panel">
+    <app-attendance-filters
+      [value]="filters()"
+      [levels]="catalog().levels"
+      [grades]="catalog().grades"
+      [groups]="catalog().groups"
+      (filtersChange)="onFiltersChange($event)"
+    />
+    <app-grade-group-selector
+      [levels]="catalog().levels"
+      [grades]="catalog().grades"
+      [groups]="catalog().groups"
+      [levelId]="filters().levelId"
+      [selectedGroupId]="filters().groupId"
+      (groupSelected)="onGroupSelected($event)"
+    />
+  </section>
+
+  <app-attendance-stats [stats]="stats()" [activeStatus]="filters().status" (statusSelected)="onStat($event)" />
+
+  @if (breakdown().length > 1) {
+    <section class="panel">
+      <h2>Resumen por grupo</h2>
+      <div class="breakdown">
+        @for (group of breakdown(); track group.id) {
+          <button type="button" (click)="onGroupSelected({ gradeId: group.gradeId, groupId: group.id })">
+            <strong>{{ group.label }}</strong>
+            <span>
+              {{ group.stats.present }} {{ group.stats.present === 1 ? 'presente' : 'presentes' }}
+              · {{ group.stats.late }} {{ group.stats.late === 1 ? 'retardo' : 'retardos' }}
+              · {{ group.stats.absent }} {{ group.stats.absent === 1 ? 'ausente' : 'ausentes' }}
+            </span>
+            <b>{{ group.stats.attendanceRate | number:'1.0-1' }}%</b>
+          </button>
+        }
+      </div>
+    </section>
+  }
+
+  <section class="panel">
+    <app-attendance-table [rows]="visibleRows()" [resetToken]="filterKey()" (consult)="consult($event)" />
+  </section>
+</section>

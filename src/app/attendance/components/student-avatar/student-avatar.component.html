@@ -1,0 +1,7 @@
+<div class="avatar" [class.avatar-md]="size() === 'md'" [style.background]="photoUrl() ? '#d9e2ec' : color()" aria-hidden="true">
+  @if (photoUrl(); as photo) {
+    <img [src]="photo" alt="" />
+  } @else {
+    <span>{{ initials() }}</span>
+  }
+</div>

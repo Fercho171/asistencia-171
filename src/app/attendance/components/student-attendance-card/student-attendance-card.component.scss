@@ -1,0 +1,25 @@
+.student-card {
+  display: flex;
+  gap: 16px;
+  padding: 16px;
+  border-radius: 16px;
+  border: 1px solid var(--line);
+  background: #fff;
+}
+
+.tone-success { border-color: #b7e4c7; background: #f3fbf6; }
+.tone-warning { border-color: #f3dd9a; background: #fffaf0; }
+.tone-error { border-color: #f3c1bd; background: #fff6f5; }
+
+.eyebrow {
+  margin: 0 0 4px;
+  color: var(--muted);
+  font-size: 13px;
+  font-weight: 600;
+}
+
+h3, p { margin: 0; }
+h3 { font-size: 20px; }
+p { color: var(--muted); }
+.time { margin-top: 8px; color: var(--ink); font-weight: 600; }
+.status { margin-top: 10px; }

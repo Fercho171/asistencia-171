@@ -1,0 +1,31 @@
+.filters {
+  display: grid;
+  grid-template-columns: 1.1fr 1fr 1.1fr 1.2fr 1.4fr 1fr auto;
+  gap: 12px;
+  align-items: start;
+}
+
+mat-form-field {
+  width: 100%;
+}
+
+.filter-actions {
+  display: flex;
+  align-items: center;
+  min-height: 56px;
+}
+
+.weekend-note {
+  margin: 8px 2px 0;
+  color: var(--late);
+  font-size: 13px;
+}
+
+@media (max-width: 1200px) {
+  .filters { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .filter-actions { grid-column: 1 / -1; min-height: 0; }
+}
+
+@media (max-width: 720px) {
+  .filters { grid-template-columns: 1fr; }
+}

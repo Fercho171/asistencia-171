@@ -1,0 +1,76 @@
+.selector-head,
+.selector-level {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+.selector-head {
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+
+h2, p {
+  margin: 0;
+}
+
+h2 {
+  font-size: 16px;
+}
+
+p {
+  min-width: 96px;
+  color: var(--muted);
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.selector-level + .selector-level {
+  margin-top: 10px;
+}
+
+.selector-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+button {
+  border: 1px solid var(--line);
+  background: #fff;
+  color: var(--ink);
+  border-radius: 12px;
+  padding: 8px 12px;
+  cursor: pointer;
+  text-align: left;
+}
+
+button strong,
+button span {
+  display: block;
+}
+
+button span {
+  color: var(--muted);
+  font-size: 12px;
+}
+
+button.is-active {
+  background: var(--brand);
+  border-color: var(--brand);
+  color: #fff;
+}
+
+button.is-active span {
+  color: rgba(255, 255, 255, 0.82);
+}
+
+.selector-head button {
+  padding: 8px 14px;
+}
+
+@media (max-width: 720px) {
+  .selector-level { flex-direction: column; align-items: stretch; }
+  .selector-grid { overflow-x: auto; flex-wrap: nowrap; padding-bottom: 4px; }
+  button { flex: 0 0 auto; }
+}

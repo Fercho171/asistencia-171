@@ -1,0 +1,25 @@
+<section class="selector" aria-label="Selector de grados y grupos">
+  <div class="selector-head">
+    <h2>Grados y grupos</h2>
+    <button type="button" [class.is-active]="!selectedGroupId()" (click)="clear()">Toda la institución</button>
+  </div>
+  @for (section of sections(); track section.level.id) {
+    <div class="selector-level">
+      <p>{{ section.level.name }}</p>
+      <div class="selector-grid">
+        @for (item of section.items; track item.group.id) {
+          <button
+            type="button"
+            [class.is-active]="selectedGroupId() === item.group.id"
+            [attr.aria-pressed]="selectedGroupId() === item.group.id"
+            [attr.aria-label]="item.label"
+            (click)="choose(item)"
+          >
+            <strong>{{ item.grade.name }}</strong>
+            <span>Grupo {{ item.group.name }}</span>
+          </button>
+        }
+      </div>
+    </div>
+  }
+</section>

@@ -1,0 +1,44 @@
+<section class="stats" aria-label="Indicadores de asistencia">
+  <button type="button" class="stat" [class.is-active]="activeStatus() === ''" (click)="select('')">
+    <span class="stat-icon stat-icon-total"><mat-icon>groups</mat-icon></span>
+    <span>
+      <span class="stat-label">Inscritos</span>
+      <strong>{{ stats().enrolled }}</strong>
+    </span>
+  </button>
+  <button type="button" class="stat" [class.is-active]="activeStatus() === 'PRESENTE'" [attr.aria-pressed]="activeStatus() === 'PRESENTE'" (click)="select('PRESENTE')">
+    <span class="stat-icon stat-icon-present"><mat-icon>check_circle</mat-icon></span>
+    <span>
+      <span class="stat-label">Presentes</span>
+      <strong>{{ stats().present }}</strong>
+    </span>
+  </button>
+  <button type="button" class="stat" [class.is-active]="activeStatus() === 'AUSENTE'" [attr.aria-pressed]="activeStatus() === 'AUSENTE'" (click)="select('AUSENTE')">
+    <span class="stat-icon stat-icon-absent"><mat-icon>cancel</mat-icon></span>
+    <span>
+      <span class="stat-label">Ausentes</span>
+      <strong>{{ stats().absent }}</strong>
+    </span>
+  </button>
+  <button type="button" class="stat" [class.is-active]="activeStatus() === 'RETARDO'" [attr.aria-pressed]="activeStatus() === 'RETARDO'" (click)="select('RETARDO')">
+    <span class="stat-icon stat-icon-late"><mat-icon>schedule</mat-icon></span>
+    <span>
+      <span class="stat-label">Retardos</span>
+      <strong>{{ stats().late }}</strong>
+    </span>
+  </button>
+  <article class="stat stat-rate">
+    <span class="stat-icon stat-icon-rate"><mat-icon>donut_large</mat-icon></span>
+    <span>
+      <span class="stat-label">Asistencia</span>
+      <strong>{{ stats().attendanceRate | number:'1.0-1' }}%</strong>
+    </span>
+    <span class="rate-track" aria-hidden="true">
+      <span class="rate-fill" [style.width.%]="stats().attendanceRate"></span>
+    </span>
+  </article>
+</section>
+<p class="stats-note">La asistencia cuenta presentes y retardos. Pulse una tarjeta para filtrar la lista.</p>
+<p class="sr-only" aria-live="polite">
+  {{ stats().present }} presentes, {{ stats().late }} retardos, {{ stats().absent }} ausentes y {{ stats().pending }} pendientes.
+</p>

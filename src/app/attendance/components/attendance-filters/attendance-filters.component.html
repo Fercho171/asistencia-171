@@ -1,0 +1,60 @@
+<form class="filters" [formGroup]="form">
+  <mat-form-field appearance="outline" subscriptSizing="dynamic">
+    <mat-label>Fecha de asistencia</mat-label>
+    <input matInput type="date" formControlName="date" />
+  </mat-form-field>
+
+  <mat-form-field appearance="outline" subscriptSizing="dynamic">
+    <mat-label>Nivel educativo</mat-label>
+    <mat-select formControlName="levelId" (selectionChange)="onLevelSelected($event.value)">
+      <mat-option value="">Todos</mat-option>
+      @for (level of levels(); track level.id) {
+        <mat-option [value]="level.id">{{ level.name }}</mat-option>
+      }
+    </mat-select>
+  </mat-form-field>
+
+  <mat-form-field appearance="outline" subscriptSizing="dynamic">
+    <mat-label>Grado escolar</mat-label>
+    <mat-select formControlName="gradeId" (selectionChange)="onGradeSelected($event.value)">
+      <mat-option value="">Todos</mat-option>
+      @for (grade of gradeOptions(); track grade.id) {
+        <mat-option [value]="grade.id">{{ grade.label }}</mat-option>
+      }
+    </mat-select>
+  </mat-form-field>
+
+  <mat-form-field appearance="outline" subscriptSizing="dynamic">
+    <mat-label>Grupo</mat-label>
+    <mat-select formControlName="groupId">
+      <mat-option value="">Todos</mat-option>
+      @for (group of groupOptions(); track group.id) {
+        <mat-option [value]="group.id">{{ group.label }}</mat-option>
+      }
+    </mat-select>
+  </mat-form-field>
+
+  <mat-form-field appearance="outline" subscriptSizing="dynamic">
+    <mat-label>Nombre del alumno</mat-label>
+    <input matInput formControlName="studentName" placeholder="Buscar por nombre o matrícula" autocomplete="off" />
+    <mat-icon matPrefix>search</mat-icon>
+  </mat-form-field>
+
+  <mat-form-field appearance="outline" subscriptSizing="dynamic">
+    <mat-label>Estado de asistencia</mat-label>
+    <mat-select formControlName="status">
+      <mat-option value="">Todos</mat-option>
+      <mat-option value="PRESENTE">Presente</mat-option>
+      <mat-option value="RETARDO">Retardo</mat-option>
+      <mat-option value="AUSENTE">Ausente</mat-option>
+      <mat-option value="PENDIENTE">Pendiente</mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <div class="filter-actions">
+    <button mat-stroked-button type="button" (click)="clear()">Limpiar filtros</button>
+  </div>
+</form>
+@if (weekend()) {
+  <p class="weekend-note">La fecha seleccionada cae en fin de semana.</p>
+}

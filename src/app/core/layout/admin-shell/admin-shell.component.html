@@ -1,0 +1,43 @@
+<mat-sidenav-container class="shell">
+  <mat-sidenav
+    class="sidebar"
+    [mode]="mobile() ? 'over' : 'side'"
+    [opened]="sidenavOpened()"
+    (closedStart)="closeIfMobile()"
+  >
+    <div class="brand">
+      <span class="mark">IH</span>
+      <span>
+        <strong>{{ schoolName }}</strong>
+        <small>{{ schoolArea }}</small>
+      </span>
+    </div>
+    <nav aria-label="Secciones">
+      @for (link of links; track link.path) {
+        <a
+          class="nav-link"
+          [routerLink]="link.path"
+          routerLinkActive="active"
+          [routerLinkActiveOptions]="{ exact: link.exact }"
+          (click)="closeIfMobile()"
+        >
+          <mat-icon>{{ link.icon }}</mat-icon>
+          {{ link.label }}
+        </a>
+      }
+    </nav>
+    @if (attendance.demoMode) {
+      <p class="demo-note">Los alumnos mostrados son de demostración. Los escaneos de esta sesión se conservan al actualizar la página.</p>
+    }
+  </mat-sidenav>
+
+  <mat-sidenav-content>
+    <div class="mobile-bar">
+      <button mat-icon-button type="button" (click)="openMenu()" aria-label="Abrir menú">
+        <mat-icon>menu</mat-icon>
+      </button>
+      <strong>{{ schoolName }}</strong>
+    </div>
+    <router-outlet />
+  </mat-sidenav-content>
+</mat-sidenav-container>

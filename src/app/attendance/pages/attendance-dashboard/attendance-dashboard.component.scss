@@ -1,0 +1,229 @@
+.grade-board {
+  margin-top: 16px;
+}
+
+.grade-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 10px;
+}
+
+.grade-board h2 {
+  margin: 0;
+  font-size: 16px;
+}
+
+.grade-totals {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.student-total {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  margin: 0;
+  padding: 8px 12px;
+  border-radius: 12px;
+  background: var(--brand-soft);
+  color: var(--brand);
+}
+
+.student-total-attended {
+  background: var(--present-bg);
+  color: var(--present);
+}
+
+.attended-sum {
+  font-weight: 500;
+}
+
+.student-total span {
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.student-total strong {
+  font-size: 22px;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.03em;
+}
+
+.grade-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.grade-card {
+  display: grid;
+  gap: 10px;
+  padding: 14px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--surface);
+  box-shadow: var(--shadow);
+}
+
+.grade-card.is-active {
+  box-shadow: inset 0 0 0 1px var(--brand);
+}
+
+.grade-main {
+  display: grid;
+  gap: 2px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.grade-kicker {
+  color: var(--accent);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.grade-main strong {
+  font-size: 18px;
+}
+
+.grade-main b {
+  font-size: 28px;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.03em;
+}
+
+.grade-track {
+  display: block;
+  height: 6px;
+  margin-top: 6px;
+  border-radius: 999px;
+  background: var(--brand-soft);
+  overflow: hidden;
+}
+
+.grade-fill {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  background: var(--brand);
+}
+
+.grade-counts {
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.4;
+}
+
+.grade-groups {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 6px;
+}
+
+.grade-groups button {
+  display: grid;
+  gap: 2px;
+  padding: 8px 6px;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: var(--paper);
+  color: inherit;
+  cursor: pointer;
+}
+
+.grade-groups button span {
+  color: var(--muted);
+  font-size: 11px;
+}
+
+.grade-groups button strong {
+  font-size: 14px;
+  font-variant-numeric: tabular-nums;
+}
+
+.grade-groups button.is-active {
+  background: var(--brand);
+  border-color: var(--brand);
+  color: #fff;
+}
+
+.grade-groups button.is-active span {
+  color: rgba(255, 255, 255, 0.82);
+}
+
+.scan-banner,
+.missing {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  align-items: center;
+}
+
+.scan-banner {
+  margin: 16px 0;
+  padding: 18px 20px;
+  border-radius: var(--radius);
+  background: var(--brand);
+  color: #fff;
+}
+
+.scan-banner h2,
+.scan-banner p { margin: 0; }
+.scan-banner h2 { font-size: 20px; }
+.scan-banner p { color: rgba(255, 255, 255, 0.82); margin-top: 4px; }
+
+.missing {
+  width: 100%;
+  margin-top: 12px;
+  padding: 12px 14px;
+  border: 1px dashed #d5c48a;
+  border-radius: 12px;
+  background: #fffaf0;
+  color: var(--late);
+  font-weight: 600;
+  cursor: pointer;
+  text-align: left;
+}
+
+.scanner-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 30;
+  border: 0;
+  background: rgba(14, 28, 43, 0.28);
+}
+
+.scanner-panel {
+  position: fixed;
+  top: 0;
+  right: 0;
+  z-index: 40;
+  width: min(460px, 100%);
+  height: 100%;
+  overflow: auto;
+  padding: 20px 20px 32px;
+  background: #f8fafc;
+  box-shadow: -16px 0 40px rgba(16, 36, 58, 0.16);
+}
+
+@media (min-width: 1100px) {
+  .scanner-backdrop { display: none; }
+}
+
+@media (max-width: 900px) {
+  .grade-grid { grid-template-columns: 1fr; }
+  .grade-head { align-items: flex-start; flex-direction: column; }
+}
+
+@media (max-width: 800px) {
+  .scan-banner { flex-direction: column; align-items: stretch; }
+}
